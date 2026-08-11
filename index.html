@@ -47,12 +47,76 @@
   header{
     display:flex;
     align-items:center;
-    justify-content:flex-end;
+    justify-content:space-between;
     gap:10px;
     padding:22px 22px 0 22px;
     position:relative;
     z-index:20;
   }
+
+  .header-right{display:flex; align-items:center; gap:10px;}
+
+  .menu-wrap{position:relative;}
+
+  .menu-btn{
+    width:40px;height:40px;
+    flex:none;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .menu-btn span{
+    display:block;
+    width:18px; height:2px;
+    background:var(--ink-soft);
+    border-radius:2px;
+    transition:background .2s ease;
+  }
+  .menu-btn:hover{border-color:var(--gold);}
+  .menu-btn:hover span{background:var(--ink);}
+  .menu-btn:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+
+  .menu-dropdown{
+    position:absolute;
+    top:calc(100% + 8px);
+    left:0;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    min-width:210px;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+    z-index:30;
+  }
+  .menu-dropdown.open{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .menu-option{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--line);
+    padding:13px 18px;
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:14px;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .menu-option:last-child{border-bottom:none;}
+  .menu-option:hover{background:var(--paper-dim); color:var(--ink);}
+  .menu-option:focus-visible{outline:2px solid var(--gold); outline-offset:-2px;}
 
   .give-btn{
     font-family:'Inter',sans-serif;
@@ -259,6 +323,7 @@
     line-height:1.6;
   }
 
+  .yt-btn[hidden]{display:none;}
   .yt-btn{
     display:inline-flex;
     align-items:center;
@@ -283,6 +348,7 @@
     border-radius:5px;
   }
   .yt-icon svg{width:12px;height:12px;}
+  .yt-btn.generic-action .yt-icon{display:none;}
 
   footer.brand{
     text-align:center;
@@ -498,13 +564,26 @@
 
 <div id="app">
   <header>
-    <button class="give-btn" id="giveBtn">Give</button>
-    <div class="lang-wrap">
-      <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">EN</button>
-      <div class="lang-menu" id="langMenu" role="menu">
-        <button class="lang-option" data-lang="en" role="menuitem">EN</button>
-        <button class="lang-option" data-lang="uk" role="menuitem">UK</button>
-        <button class="lang-option" data-lang="ru" role="menuitem">RU</button>
+    <div class="menu-wrap">
+      <button class="menu-btn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="menu-dropdown" id="menuDropdown" role="menu">
+        <button class="menu-option" data-menu="0" role="menuitem"></button>
+        <button class="menu-option" data-menu="1" role="menuitem"></button>
+        <button class="menu-option" data-menu="2" role="menuitem"></button>
+        <button class="menu-option" data-menu="3" role="menuitem"></button>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="give-btn" id="giveBtn">Give</button>
+      <div class="lang-wrap">
+        <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">EN</button>
+        <div class="lang-menu" id="langMenu" role="menu">
+          <button class="lang-option" data-lang="en" role="menuitem">EN</button>
+          <button class="lang-option" data-lang="uk" role="menuitem">UK</button>
+          <button class="lang-option" data-lang="ru" role="menuitem">RU</button>
+        </div>
       </div>
     </div>
   </header>
@@ -694,7 +773,34 @@ const translations = {
       successText: "Your donation was received. A receipt has been sent to {contact}.",
       doneBtn: "Done",
       required: "Please fill in all fields"
-    }
+    },
+    menuAria: "Menu",
+    menuItems: [
+      {
+        eyebrow: "Get in touch",
+        title: "Contacts",
+        text: "We'd love to hear from you. Reach out any time \u2014 we usually reply within a day.\n\nPhone: +1 (555) 201-4488\nEmail: hello@firstlightchurch.org\nInstagram: @firstlight.church",
+        action: { type: "tel", value: "+15552014488", label: "Call us" }
+      },
+      {
+        eyebrow: "Visit us",
+        title: "Church Address",
+        text: "Come worship with us in person \u2014 we'd love to welcome you at the door.\n\n120 Harbor Light Avenue\nRiverside, CA 92501",
+        action: { type: "maps", value: "120 Harbor Light Avenue, Riverside, CA 92501", label: "Get Directions" }
+      },
+      {
+        eyebrow: "Join us",
+        title: "Service Schedule",
+        text: "Sunday Worship \u2014 10:00 AM & 5:00 PM\nWednesday Prayer Night \u2014 7:00 PM\nFriday Youth Gathering \u2014 7:00 PM\n\nDoors open 30 minutes before each service. Everyone is welcome, just as you are.",
+        action: null
+      },
+      {
+        eyebrow: "Get involved",
+        title: "I Want to Serve",
+        text: "Serving is one of the best ways to grow in faith and community. Whether it's welcoming guests, worship, kids' ministry, or behind the scenes \u2014 there's a place for you.\n\nTell us a bit about yourself and we'll help you find the right team.",
+        action: { type: "mailto", value: "serve@firstlightchurch.org?subject=I want to serve", label: "Sign up to serve" }
+      }
+    ]
   },
   ru: {
     footer: "Церковь «Первый Свет»",
@@ -785,7 +891,34 @@ const translations = {
       successText: "Ваше пожертвование получено. Квитанция отправлена на {contact}.",
       doneBtn: "Готово",
       required: "Пожалуйста, заполните все поля"
-    }
+    },
+    menuAria: "Меню",
+    menuItems: [
+      {
+        eyebrow: "Свяжитесь с нами",
+        title: "Контакты",
+        text: "Мы будем рады услышать вас. Пишите или звоните в любое время — обычно отвечаем в течение дня.\n\nТелефон: +1 (555) 201-4488\nEmail: hello@firstlightchurch.org\nInstagram: @firstlight.church",
+        action: { type: "tel", value: "+15552014488", label: "Позвонить" }
+      },
+      {
+        eyebrow: "Приходите к нам",
+        title: "Адрес церкви",
+        text: "Приходите на богослужение лично — будем рады встретить вас у дверей.\n\nHarbor Light Avenue, 120\nРиверсайд, Калифорния 92501",
+        action: { type: "maps", value: "120 Harbor Light Avenue, Riverside, CA 92501", label: "Проложить маршрут" }
+      },
+      {
+        eyebrow: "Присоединяйтесь",
+        title: "Расписание служений",
+        text: "Воскресное богослужение — 10:00 и 17:00\nМолитвенный вечер по средам — 19:00\nМолодёжная встреча по пятницам — 19:00\n\nДвери открываются за 30 минут до начала каждого служения. Мы будем рады видеть вас такими, какие вы есть.",
+        action: null
+      },
+      {
+        eyebrow: "Присоединяйтесь к служению",
+        title: "Хочу послужить",
+        text: "Служение — один из лучших способов расти в вере и в общении. Встреча гостей, поклонение, детское служение или работа за кулисами — для тебя найдётся место.\n\nРасскажи немного о себе, и мы поможем найти подходящую команду.",
+        action: { type: "mailto", value: "serve@firstlightchurch.org?subject=Хочу послужить", label: "Записаться на служение" }
+      }
+    ]
   },
   uk: {
     footer: "Церква «Перше Світло»",
@@ -876,14 +1009,44 @@ const translations = {
       successText: "Вашу пожертву отримано. Квитанцію надіслано на {contact}.",
       doneBtn: "Готово",
       required: "Будь ласка, заповніть усі поля"
-    }
+    },
+    menuAria: "Меню",
+    menuItems: [
+      {
+        eyebrow: "Зв'яжіться з нами",
+        title: "Контакти",
+        text: "Ми будемо раді почути вас. Пишіть або телефонуйте в будь-який час — зазвичай відповідаємо протягом дня.\n\nТелефон: +1 (555) 201-4488\nEmail: hello@firstlightchurch.org\nInstagram: @firstlight.church",
+        action: { type: "tel", value: "+15552014488", label: "Зателефонувати" }
+      },
+      {
+        eyebrow: "Завітайте до нас",
+        title: "Адреса церкви",
+        text: "Завітайте на богослужіння особисто — будемо раді зустріти вас біля дверей.\n\nHarbor Light Avenue, 120\nРіверсайд, Каліфорнія 92501",
+        action: { type: "maps", value: "120 Harbor Light Avenue, Riverside, CA 92501", label: "Прокласти маршрут" }
+      },
+      {
+        eyebrow: "Приєднуйтесь",
+        title: "Розклад богослужінь",
+        text: "Недільне богослужіння — 10:00 та 17:00\nМолитовний вечір по середах — 19:00\nМолодіжна зустріч по п'ятницях — 19:00\n\nДвері відчиняються за 30 хвилин до початку кожного богослужіння. Ми будемо раді бачити вас такими, якими ви є.",
+        action: null
+      },
+      {
+        eyebrow: "Долучайтесь до служіння",
+        title: "Хочу послужити",
+        text: "Служіння — один із найкращих способів зростати у вірі та спільноті. Зустріч гостей, поклоніння, дитяче служіння чи робота за лаштунками — для тебе знайдеться місце.\n\nРозкажи трохи про себе, і ми допоможемо знайти відповідну команду.",
+        action: { type: "mailto", value: "serve@firstlightchurch.org?subject=Хочу послужити", label: "Записатися на служіння" }
+      }
+    ]
   }
 };
 
 let currentLang = 'en';
 let currentCardIndex = null;
+let currentMenuIndex = null;
 
 const els = {
+  menuBtn: document.getElementById('menuBtn'),
+  menuDropdown: document.getElementById('menuDropdown'),
   langBtn: document.getElementById('langBtn'),
   langMenu: document.getElementById('langMenu'),
   greeting: document.getElementById('t-greeting'),
@@ -979,22 +1142,68 @@ function renderHome(){
     btn.addEventListener('click', () => openDetail(i));
     els.cardsWrap.appendChild(btn);
   });
+
+  els.menuBtn.setAttribute('aria-label', t.menuAria);
+  document.querySelectorAll('.menu-option').forEach(opt => {
+    opt.textContent = t.menuItems[Number(opt.dataset.menu)].title;
+  });
+}
+
+function actionHref(action){
+  if(!action) return '#';
+  if(action.type === 'tel') return 'tel:' + action.value;
+  if(action.type === 'mailto') return 'mailto:' + action.value;
+  if(action.type === 'maps') return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(action.value);
+  return action.value || '#';
 }
 
 function renderDetail(){
-  if(currentCardIndex === null) return;
   const t = translations[currentLang];
+
+  if(currentMenuIndex !== null){
+    const item = t.menuItems[currentMenuIndex];
+    els.dEyebrow.textContent = item.eyebrow;
+    els.dTitle.textContent = item.title;
+    els.dText.textContent = item.text;
+    els.dVerse.hidden = true;
+    els.dYt.classList.add('generic-action');
+    if(item.action){
+      els.dYt.hidden = false;
+      els.dYt.href = actionHref(item.action);
+      els.dYt.target = item.action.type === 'maps' ? '_blank' : '_self';
+      els.dYtLabel.textContent = item.action.label;
+    } else {
+      els.dYt.hidden = true;
+    }
+    return;
+  }
+
+  if(currentCardIndex === null) return;
   const card = t.cards[currentCardIndex];
   els.dEyebrow.textContent = card.eyebrow;
   els.dTitle.textContent = card.title;
   els.dText.textContent = card.text;
   els.dVerse.textContent = card.verse;
+  els.dVerse.hidden = false;
+  els.dYt.classList.remove('generic-action');
+  els.dYt.hidden = false;
+  els.dYt.target = '_blank';
   els.dYt.href = youtubeSearchUrl(card.search);
   els.dYtLabel.textContent = t.watch;
 }
 
 function openDetail(index){
   currentCardIndex = index;
+  currentMenuIndex = null;
+  renderDetail();
+  els.home.classList.add('hidden');
+  els.detail.classList.add('visible');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function openMenuItem(index){
+  currentMenuIndex = index;
+  currentCardIndex = null;
   renderDetail();
   els.home.classList.add('hidden');
   els.detail.classList.add('visible');
@@ -1005,13 +1214,14 @@ function closeDetail(){
   els.detail.classList.remove('visible');
   els.home.classList.remove('hidden');
   currentCardIndex = null;
+  currentMenuIndex = null;
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function setLang(lang){
   currentLang = lang;
   renderHome();
-  if(currentCardIndex !== null) renderDetail();
+  if(currentCardIndex !== null || currentMenuIndex !== null) renderDetail();
   updateGiveTexts();
   if(giveState.step) setGiveStep(giveState.step);
   els.langMenu.classList.remove('open');
@@ -1030,10 +1240,27 @@ document.querySelectorAll('.lang-option').forEach(opt => {
   opt.addEventListener('click', () => setLang(opt.dataset.lang));
 });
 
+els.menuBtn.addEventListener('click', () => {
+  const open = els.menuDropdown.classList.toggle('open');
+  els.menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+
+document.querySelectorAll('.menu-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    els.menuDropdown.classList.remove('open');
+    els.menuBtn.setAttribute('aria-expanded', 'false');
+    openMenuItem(Number(opt.dataset.menu));
+  });
+});
+
 document.addEventListener('click', (e) => {
-  if(!els.langWrap && !e.target.closest('.lang-wrap')){
+  if(!e.target.closest('.lang-wrap')){
     els.langMenu.classList.remove('open');
     els.langBtn.setAttribute('aria-expanded','false');
+  }
+  if(!e.target.closest('.menu-wrap')){
+    els.menuDropdown.classList.remove('open');
+    els.menuBtn.setAttribute('aria-expanded','false');
   }
 });
 
