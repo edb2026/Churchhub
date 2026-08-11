@@ -350,6 +350,72 @@
   .yt-icon svg{width:12px;height:12px;}
   .yt-btn.generic-action .yt-icon{display:none;}
 
+  .study-block[hidden]{display:none;}
+  .study-block{margin-top:8px;}
+
+  .study-note{
+    font-size:15px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    background:var(--paper-dim);
+    border-left:2px solid var(--sky);
+    padding:14px 18px;
+    border-radius:0 12px 12px 0;
+    margin:0 0 20px 0;
+  }
+
+  .video-links{display:flex; flex-direction:column; gap:10px; margin:0 0 24px 0;}
+  .video-link-btn{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--ink);
+    color:var(--paper);
+    text-decoration:none;
+    padding:16px 24px;
+    border-radius:999px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .video-link-btn:hover{background:var(--gold); transform:translateY(-1px);}
+  .video-link-btn:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+  .video-link-btn .yt-icon{
+    width:22px;height:22px;
+    flex:none;
+    display:flex;align-items:center;justify-content:center;
+    background:#fff;
+    border-radius:5px;
+  }
+  .video-link-btn .yt-icon svg{width:12px;height:12px;}
+
+  .blessing-text{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:17px;
+    line-height:1.6;
+    color:var(--dusk);
+    border-left:2px solid var(--gold-soft);
+    padding:2px 0 2px 18px;
+    margin:0 0 24px 0;
+  }
+
+  .quiz-btn{
+    background:var(--sky);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    padding:16px 24px;
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .quiz-btn:hover{background:var(--sky-dark); transform:translateY(-1px);}
+  .quiz-btn:focus-visible{outline:2px solid var(--sky-dark); outline-offset:3px;}
+
   footer.brand{
     text-align:center;
     padding:30px 22px 44px 22px;
@@ -606,6 +672,13 @@
       <span class="yt-icon"><svg viewBox="0 0 24 24" fill="#23283A"><path d="M21.6 7.2s-.2-1.5-.8-2.2c-.8-.9-1.7-.9-2.1-1C15.9 3.8 12 3.8 12 3.8h0s-3.9 0-6.7.2c-.4 0-1.3.1-2.1 1-.6.7-.8 2.2-.8 2.2S2.2 9 2.2 10.8v1.4c0 1.8.2 3.6.2 3.6s.2 1.5.8 2.2c.8.9 1.9.9 2.4 1 1.7.2 7.4.2 7.4.2s3.9 0 6.7-.2c.4 0 1.3-.1 2.1-1 .6-.7.8-2.2.8-2.2s.2-1.8.2-3.6v-1.4c0-1.8-.2-3.6-.2-3.6zM9.9 14.6V8.6l5.4 3-5.4 3z"/></svg></span>
       <span id="d-yt-label"></span>
     </a>
+
+    <div class="study-block" id="dStudyBlock" hidden>
+      <p class="study-note" id="dStudyNote"></p>
+      <div class="video-links" id="dVideoLinks"></div>
+      <p class="blessing-text" id="dBlessing"></p>
+      <button class="quiz-btn" id="dQuizBtn"></button>
+    </div>
   </section>
 
   <footer class="brand" id="t-footer"></footer>
@@ -682,6 +755,19 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="quizOverlay">
+  <div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle">
+    <div class="modal-header">
+      <span style="width:32px" aria-hidden="true"></span>
+      <h3 class="modal-title" id="quizModalTitle"></h3>
+      <button class="modal-close" id="quizCloseBtn" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <p id="quizPlaceholderText"></p>
+    </div>
+  </div>
+</div>
+
 <script>
 const translations = {
   en: {
@@ -724,7 +810,16 @@ const translations = {
         eyebrow: "Your path",
         text: "God's blessing isn't only spiritual — He cares about every area of your life, including your finances, work, and provision. True prosperity flows from a heart aligned with Him, marked by generosity and faithful stewardship.",
         verse: "\u201CBeloved, I pray that you may prosper in all things and be in health, just as your soul prospers.\u201D — 3 John 1:2",
-        search: "biblical prosperity blessing testimony christian"
+        search: "biblical prosperity blessing testimony christian",
+        videos: [
+          { url: "https://youtu.be/iTlqSuzr2_o", label: "Lesson 1" },
+          { url: "https://youtu.be/iGgnezik_64", label: "Lesson 2" }
+        ],
+        studyNote: "Listen to these two lessons carefully \u2014 they cover a lot of ground. Afterward, answer the 10 review questions below.",
+        blessing: "We wish you prosperity in all things, just as your soul prospers. May financial abundance fill your home, your business, and your life in a divine way.",
+        quizLabel: "Review Questions",
+        quizTitle: "Review Questions",
+        quizPlaceholder: "Questions for these lessons will be added here soon."
       },
       {
         title: "Learn to pray and get answers",
@@ -842,7 +937,16 @@ const translations = {
         eyebrow: "Ваш путь",
         text: "Благословение Божье касается не только духовной жизни — Он заботится о каждой сфере твоей жизни, включая финансы, работу и обеспечение. Настоящее преуспевание рождается из сердца, устремлённого к Нему, отмеченного щедростью и верным управлением.",
         verse: "«Возлюбленный! молюсь, чтобы ты во всём преуспевал и был здоров, как преуспевает душа твоя». — 3 Иоанна 1:2",
-        search: "библейское преуспевание благословение свидетельство"
+        search: "библейское преуспевание благословение свидетельство",
+        videos: [
+          { url: "https://youtu.be/iTlqSuzr2_o", label: "Урок 1" },
+          { url: "https://youtu.be/iGgnezik_64", label: "Урок 2" }
+        ],
+        studyNote: "Прослушайте эти два урока и будьте старательны — они содержат много важного материала. После прослушивания ответьте на 10 следующих проверочных вопросов.",
+        blessing: "Мы желаем вам преуспевать во всём, как преуспевает ваша душа. Пусть финансовое изобилие наполнит ваш дом, ваш бизнес и вашу жизнь божественным способом.",
+        quizLabel: "Проверочные вопросы",
+        quizTitle: "Проверочные вопросы",
+        quizPlaceholder: "Вопросы к этим урокам появятся здесь совсем скоро."
       },
       {
         title: "Научиться молиться, чтобы получать ответ",
@@ -960,7 +1064,16 @@ const translations = {
         eyebrow: "Ваш шлях",
         text: "Боже благословення стосується не лише духовного життя — Він піклується про кожну сферу твого життя, включно з фінансами, роботою та забезпеченням. Справжнє преуспіяння народжується із серця, зверненого до Нього, позначеного щедрістю та вірним управлінням.",
         verse: "«Улюблений, молюся, щоб ти в усьому преуспівав і був здоровий, як преуспіває душа твоя». — 3 Івана 1:2",
-        search: "біблійне преуспіяння благословення свідчення"
+        search: "біблійне преуспіяння благословення свідчення",
+        videos: [
+          { url: "https://youtu.be/iTlqSuzr2_o", label: "Урок 1" },
+          { url: "https://youtu.be/iGgnezik_64", label: "Урок 2" }
+        ],
+        studyNote: "Прослухайте ці два уроки уважно — вони містять багато матеріалу. Після прослуховування дайте відповіді на 10 наступних перевірочних запитань.",
+        blessing: "Ми бажаємо вам преуспівати в усьому, як преуспіває ваша душа. Нехай фінансовий достаток наповнить ваш дім, ваш бізнес і ваше життя божественним способом.",
+        quizLabel: "Перевірочні запитання",
+        quizTitle: "Перевірочні запитання",
+        quizPlaceholder: "Запитання до цих уроків з'являться тут незабаром."
       },
       {
         title: "Навчитися молитися, щоб отримувати відповідь",
@@ -1064,6 +1177,17 @@ const els = {
   dYt: document.getElementById('d-yt'),
   dYtLabel: document.getElementById('d-yt-label'),
 
+  dStudyBlock: document.getElementById('dStudyBlock'),
+  dStudyNote: document.getElementById('dStudyNote'),
+  dVideoLinks: document.getElementById('dVideoLinks'),
+  dBlessing: document.getElementById('dBlessing'),
+  dQuizBtn: document.getElementById('dQuizBtn'),
+
+  quizOverlay: document.getElementById('quizOverlay'),
+  quizModalTitle: document.getElementById('quizModalTitle'),
+  quizCloseBtn: document.getElementById('quizCloseBtn'),
+  quizPlaceholderText: document.getElementById('quizPlaceholderText'),
+
   giveBtn: document.getElementById('giveBtn'),
   giveOverlay: document.getElementById('giveOverlay'),
   giveModal: document.getElementById('giveModal'),
@@ -1166,6 +1290,7 @@ function renderDetail(){
     els.dTitle.textContent = item.title;
     els.dText.textContent = item.text;
     els.dVerse.hidden = true;
+    els.dStudyBlock.hidden = true;
     els.dYt.classList.add('generic-action');
     if(item.action){
       els.dYt.hidden = false;
@@ -1186,10 +1311,46 @@ function renderDetail(){
   els.dVerse.textContent = card.verse;
   els.dVerse.hidden = false;
   els.dYt.classList.remove('generic-action');
-  els.dYt.hidden = false;
-  els.dYt.target = '_blank';
-  els.dYt.href = youtubeSearchUrl(card.search);
-  els.dYtLabel.textContent = t.watch;
+
+  if(card.videos){
+    els.dYt.hidden = true;
+    els.dStudyBlock.hidden = false;
+    els.dStudyNote.textContent = card.studyNote;
+    els.dBlessing.textContent = card.blessing;
+    els.dQuizBtn.textContent = card.quizLabel;
+    els.dVideoLinks.innerHTML = '';
+    card.videos.forEach(video => {
+      const a = document.createElement('a');
+      a.className = 'video-link-btn';
+      a.href = video.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.innerHTML = '<span class="yt-icon"><svg viewBox="0 0 24 24" fill="#23283A"><path d="M21.6 7.2s-.2-1.5-.8-2.2c-.8-.9-1.7-.9-2.1-1C15.9 3.8 12 3.8 12 3.8h0s-3.9 0-6.7.2c-.4 0-1.3.1-2.1 1-.6.7-.8 2.2-.8 2.2S2.2 9 2.2 10.8v1.4c0 1.8.2 3.6.2 3.6s.2 1.5.8 2.2c.8.9 1.9.9 2.4 1 1.7.2 7.4.2 7.4.2s3.9 0 6.7-.2c.4 0 1.3-.1 2.1-1 .6-.7.8-2.2.8-2.2s.2-1.8.2-3.6v-1.4c0-1.8-.2-3.6-.2-3.6zM9.9 14.6V8.6l5.4 3-5.4 3z"/></svg></span><span></span>';
+      a.querySelector('span:last-child').textContent = video.label;
+      els.dVideoLinks.appendChild(a);
+    });
+  } else {
+    els.dStudyBlock.hidden = true;
+    els.dYt.hidden = false;
+    els.dYt.target = '_blank';
+    els.dYt.href = youtubeSearchUrl(card.search);
+    els.dYtLabel.textContent = t.watch;
+  }
+}
+
+function openQuiz(){
+  const t = translations[currentLang];
+  if(currentCardIndex === null) return;
+  const card = t.cards[currentCardIndex];
+  els.quizModalTitle.textContent = card.quizTitle;
+  els.quizPlaceholderText.textContent = card.quizPlaceholder;
+  els.quizOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQuiz(){
+  els.quizOverlay.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 function openDetail(index){
@@ -1454,6 +1615,15 @@ els.payCompleteBtn.addEventListener('click', () => {
 });
 
 els.doneBtn.addEventListener('click', closeGiveModal);
+
+els.dQuizBtn.addEventListener('click', openQuiz);
+els.quizCloseBtn.addEventListener('click', closeQuiz);
+els.quizOverlay.addEventListener('click', (e) => {
+  if(e.target === els.quizOverlay) closeQuiz();
+});
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && els.quizOverlay.classList.contains('open')) closeQuiz();
+});
 
 renderHome();
 </script>
