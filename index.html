@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firstlight — Faith &amp; Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#23283A;
+    --ink-soft:#4B5169;
+    --paper:#FBFAF7;
+    --paper-dim:#F1EEE6;
+    --line:#E4E0D6;
+    --gold:#B8912F;
+    --gold-soft:#EADFC2;
+    --dusk:#5C6699;
+    --radius:20px;
+    --shadow: 0 1px 2px rgba(35,40,58,0.04), 0 8px 24px rgba(35,40,58,0.06);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  #app{
+    max-width:560px;
+    margin:0 auto;
+    min-height:100vh;
+    position:relative;
+    background:
+      radial-gradient(ellipse 900px 300px at 50% -60px, rgba(184,145,47,0.10), transparent 70%),
+      var(--paper);
+  }
+
+  /* header */
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding:22px 22px 0 22px;
+    position:relative;
+    z-index:20;
+  }
+
+  .lang-wrap{position:relative;}
+
+  .lang-btn{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 16px;
+    cursor:pointer;
+    transition:border-color .2s ease, color .2s ease, background .2s ease;
+  }
+  .lang-btn:hover{border-color:var(--gold); color:var(--ink);}
+  .lang-btn:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+
+  .lang-menu{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    min-width:104px;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .lang-menu.open{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .lang-option{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    padding:10px 16px;
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:13px;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .lang-option:hover{background:var(--paper-dim); color:var(--ink);}
+  .lang-option[aria-current="true"]{color:var(--gold); font-weight:600;}
+
+  /* home screen */
+  main{padding:0 22px 60px 22px;}
+
+  .greeting{
+    text-align:center;
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:38px 0 14px 0;
+    opacity:0;
+    animation:riseIn .7s ease forwards;
+  }
+
+  .question{
+    text-align:center;
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(26px, 6vw, 34px);
+    line-height:1.28;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+    margin:0 0 40px 0;
+    opacity:0;
+    animation:riseIn .8s ease .08s forwards;
+  }
+
+  @keyframes riseIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .cards{display:flex; flex-direction:column; gap:12px;}
+
+  .card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    width:100%;
+    text-align:left;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    cursor:pointer;
+    font-family:inherit;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    opacity:0;
+    animation:riseIn .6s ease forwards;
+  }
+  .card:hover{border-color:var(--gold); box-shadow:var(--shadow); transform:translateY(-2px);}
+  .card:active{transform:translateY(0);}
+  .card:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+
+  .card-title{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:19px;
+    color:var(--ink);
+  }
+  .card-arrow{
+    flex:none;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:var(--gold-soft);
+    color:var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .card:hover .card-arrow{background:var(--gold); color:var(--paper); transform:translateX(2px);}
+
+  /* detail screen */
+  .detail{
+    padding:0 22px 60px 22px;
+    display:none;
+  }
+  .detail.visible{display:block;}
+  #home.hidden{display:none;}
+
+  .back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:14px;
+    padding:0;
+    margin:34px 0 30px 0;
+    cursor:pointer;
+  }
+  .back-btn:hover{color:var(--ink);}
+  .back-btn:focus-visible{outline:2px solid var(--gold); outline-offset:4px;}
+
+  .detail-eyebrow{
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:10px;
+  }
+
+  .detail-title{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(28px,7vw,38px);
+    line-height:1.15;
+    margin:0 0 22px 0;
+    color:var(--ink);
+  }
+
+  .detail-text{
+    font-size:16px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    margin:0 0 30px 0;
+    white-space:pre-line;
+  }
+
+  .verse{
+    border-left:2px solid var(--gold-soft);
+    padding:2px 0 2px 18px;
+    margin:0 0 34px 0;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:17px;
+    color:var(--dusk);
+    line-height:1.6;
+  }
+
+  .yt-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    background:var(--ink);
+    color:var(--paper);
+    text-decoration:none;
+    padding:16px 24px;
+    border-radius:999px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .yt-btn:hover{background:var(--gold); transform:translateY(-1px);}
+  .yt-btn:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+  .yt-icon{
+    width:22px;height:22px;
+    flex:none;
+    display:flex;align-items:center;justify-content:center;
+    background:#fff;
+    border-radius:5px;
+  }
+  .yt-icon svg{width:12px;height:12px;}
+
+  footer.brand{
+    text-align:center;
+    padding:30px 22px 44px 22px;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#9CA0B4;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header>
+    <div class="lang-wrap">
+      <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">EN</button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <button class="lang-option" data-lang="en" role="menuitem">EN</button>
+        <button class="lang-option" data-lang="uk" role="menuitem">UK</button>
+        <button class="lang-option" data-lang="ru" role="menuitem">RU</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <p class="greeting" id="t-greeting"></p>
+    <h1 class="question" id="t-question"></h1>
+    <div class="cards" id="cardsWrap"></div>
+  </main>
+
+  <section class="detail" id="detail">
+    <button class="back-btn" id="backBtn">
+      <span aria-hidden="true">←</span> <span id="t-back"></span>
+    </button>
+    <p class="detail-eyebrow" id="d-eyebrow"></p>
+    <h2 class="detail-title" id="d-title"></h2>
+    <p class="detail-text" id="d-text"></p>
+    <p class="verse" id="d-verse"></p>
+    <a class="yt-btn" id="d-yt" href="#" target="_blank" rel="noopener noreferrer">
+      <span class="yt-icon"><svg viewBox="0 0 24 24" fill="#23283A"><path d="M21.6 7.2s-.2-1.5-.8-2.2c-.8-.9-1.7-.9-2.1-1C15.9 3.8 12 3.8 12 3.8h0s-3.9 0-6.7.2c-.4 0-1.3.1-2.1 1-.6.7-.8 2.2-.8 2.2S2.2 9 2.2 10.8v1.4c0 1.8.2 3.6.2 3.6s.2 1.5.8 2.2c.8.9 1.9.9 2.4 1 1.7.2 7.4.2 7.4.2s3.9 0 6.7-.2c.4 0 1.3-.1 2.1-1 .6-.7.8-2.2.8-2.2s.2-1.8.2-3.6v-1.4c0-1.8-.2-3.6-.2-3.6zM9.9 14.6V8.6l5.4 3-5.4 3z"/></svg></span>
+      <span id="d-yt-label"></span>
+    </a>
+  </section>
+
+  <footer class="brand" id="t-footer"></footer>
+</div>
+
+<script>
+const translations = {
+  en: {
+    footer: "Firstlight Church",
+    greeting: "God bless you",
+    question: "What do you want to change in your life today?",
+    back: "Back",
+    watch: "Watch on YouTube",
+    cards: [
+      {
+        title: "Healing",
+        eyebrow: "Your path",
+        text: "Pain, sickness, or a broken heart — none of it is the end of your story. God is close to the brokenhearted, and He is still in the business of making things whole. You don't have to carry this alone.",
+        verse: "\u201CHe heals the brokenhearted and binds up their wounds.\u201D — Psalm 147:3",
+        search: "healing prayer testimony christian"
+      },
+      {
+        title: "Overcome addiction",
+        eyebrow: "Your path",
+        text: "Freedom is possible — not through willpower alone, but through a new source of strength. Many have walked out of addiction and into a new life. Your next choice can be the first step.",
+        verse: "\u201CSo if the Son sets you free, you will be free indeed.\u201D — John 8:36",
+        search: "overcoming addiction christian testimony"
+      },
+      {
+        title: "Overcome anxiety and fear",
+        eyebrow: "Your path",
+        text: "The racing thoughts, the tight chest, the fear of what's next — you were never meant to hold that weight alone. Peace is available, even in uncertainty, even today.",
+        verse: "\u201CDo not be anxious about anything... and the peace of God will guard your hearts.\u201D — Philippians 4:6-7",
+        search: "overcoming anxiety and fear christian faith"
+      },
+      {
+        title: "Strengthen family relationships",
+        eyebrow: "Your path",
+        text: "Marriages, parents, children, siblings — relationships are worth fighting for. Real change starts small: one honest conversation, one act of grace at a time.",
+        verse: "\u201CLove is patient, love is kind.\u201D — 1 Corinthians 13:4",
+        search: "strengthening family relationships christian marriage"
+      },
+      {
+        title: "Learn to pray and get answers",
+        eyebrow: "Your path",
+        text: "Prayer isn't a formula, it's a relationship. Learn how to bring your real questions and real needs to God — and how to recognize His answers when they come.",
+        verse: "\u201CAsk and it will be given to you.\u201D — Matthew 7:7",
+        search: "how to pray effectively christian teaching"
+      },
+      {
+        title: "Attend an event",
+        eyebrow: "Your path",
+        text: "Faith grows best in community. Join us in person — for worship, for connection, and for the next step on your journey. We'd love to meet you.",
+        verse: "\u201CFor where two or three gather in my name, there am I with them.\u201D — Matthew 18:20",
+        search: "church events worship gathering welcome"
+      }
+    ]
+  },
+  ru: {
+    footer: "Церковь «Первый Свет»",
+    greeting: "Бог да благословит тебя",
+    question: "Что вы хотите изменить в своей жизни сегодня?",
+    back: "Назад",
+    watch: "Смотреть на YouTube",
+    cards: [
+      {
+        title: "Исцеление",
+        eyebrow: "Ваш путь",
+        text: "Боль, болезнь или разбитое сердце — это ещё не конец твоей истории. Бог близок к сокрушённым сердцем, и Он всё ещё исцеляет. Тебе не нужно нести это в одиночку.",
+        verse: "«Он исцеляет сокрушённых сердцем и врачует скорби их». — Псалом 146:3",
+        search: "исцеление молитва свидетельство христианское"
+      },
+      {
+        title: "Победить зависимость",
+        eyebrow: "Ваш путь",
+        text: "Свобода возможна — не только силой воли, но благодаря новому источнику силы. Многие вышли из зависимости к новой жизни. Твой следующий выбор может стать первым шагом.",
+        verse: "«Итак, если Сын освободит вас, то истинно свободны будете». — Иоанна 8:36",
+        search: "победить зависимость христианское свидетельство"
+      },
+      {
+        title: "Побороть тревогу и страх",
+        eyebrow: "Ваш путь",
+        text: "Тревожные мысли, стеснение в груди, страх за будущее — тебе никогда не нужно было нести этот груз в одиночку. Мир доступен даже в неопределённости, даже сегодня.",
+        verse: "«Не заботьтесь ни о чём... и мир Божий... соблюдёт сердца ваши». — Филиппийцам 4:6-7",
+        search: "побороть тревогу и страх христианская вера"
+      },
+      {
+        title: "Укрепить семейные отношения",
+        eyebrow: "Ваш путь",
+        text: "Браки, родители, дети, братья и сёстры — за отношения стоит бороться. Настоящие перемены начинаются с малого: один честный разговор, один добрый поступок за раз.",
+        verse: "«Любовь долготерпит, милосердствует». — 1 Коринфянам 13:4",
+        search: "укрепить семейные отношения христианский брак"
+      },
+      {
+        title: "Научиться молиться, чтобы получать ответ",
+        eyebrow: "Ваш путь",
+        text: "Молитва — это не формула, а отношения. Научись приносить свои настоящие вопросы и нужды Богу — и узнавать Его ответы, когда они приходят.",
+        verse: "«Просите, и дано будет вам». — Матфея 7:7",
+        search: "как правильно молиться христианское учение"
+      },
+      {
+        title: "Побывать на мероприятии",
+        eyebrow: "Ваш путь",
+        text: "Вера лучше всего растёт в общении. Присоединяйся к нам вживую — для поклонения, общения и следующего шага в твоём пути. Мы будем рады встрече с тобой.",
+        verse: "«Ибо где двое или трое собраны во имя Моё, там Я посреди них». — Матфея 18:20",
+        search: "церковь мероприятия богослужение встреча"
+      }
+    ]
+  },
+  uk: {
+    footer: "Церква «Перше Світло»",
+    greeting: "Бог хай благословить тебе",
+    question: "Що ви хочете змінити у своєму житті сьогодні?",
+    back: "Назад",
+    watch: "Дивитися на YouTube",
+    cards: [
+      {
+        title: "Зцілення",
+        eyebrow: "Ваш шлях",
+        text: "Біль, хвороба чи розбите серце — це ще не кінець твоєї історії. Бог близький до тих, у кого зламане серце, і Він досі зцілює. Тобі не потрібно нести це самому.",
+        verse: "«Він зцілює зламаних серцем і перев'язує їхні рани». — Псалом 146:3",
+        search: "зцілення молитва свідчення християнське"
+      },
+      {
+        title: "Перемогти залежність",
+        eyebrow: "Ваш шлях",
+        text: "Свобода можлива — не лише силою волі, а завдяки новому джерелу сили. Багато хто вийшов із залежності до нового життя. Твій наступний вибір може стати першим кроком.",
+        verse: "«Отже, коли Син зробить вас вільними, то справді вільні будете». — Івана 8:36",
+        search: "перемогти залежність християнське свідчення"
+      },
+      {
+        title: "Побороти тривогу і страх",
+        eyebrow: "Ваш шлях",
+        text: "Тривожні думки, стиснення в грудях, страх перед майбутнім — тобі ніколи не потрібно було нести цей тягар самому. Мир доступний навіть у невизначеності, навіть сьогодні.",
+        verse: "«Ні про що не турбуйтесь... і мир Божий... збереже серця ваші». — Филип'ян 4:6-7",
+        search: "побороти тривогу і страх християнська віра"
+      },
+      {
+        title: "Зміцнити сімейні стосунки",
+        eyebrow: "Ваш шлях",
+        text: "Шлюби, батьки, діти, брати і сестри — за стосунки варто боротися. Справжні зміни починаються з малого: одна щира розмова, один добрий вчинок за раз.",
+        verse: "«Любов довготерпить, милосердствує». — 1 Коринтян 13:4",
+        search: "зміцнити сімейні стосунки християнський шлюб"
+      },
+      {
+        title: "Навчитися молитися, щоб отримувати відповідь",
+        eyebrow: "Ваш шлях",
+        text: "Молитва — це не формула, а стосунки. Навчись приносити свої справжні питання і потреби Богу — і впізнавати Його відповіді, коли вони приходять.",
+        verse: "«Просіть, і буде дано вам». — Матвія 7:7",
+        search: "як правильно молитися християнське вчення"
+      },
+      {
+        title: "Побувати на заході",
+        eyebrow: "Ваш шлях",
+        text: "Віра найкраще росте у спільноті. Приєднуйся до нас наживо — для поклоніння, спілкування і наступного кроку на твоєму шляху. Ми будемо раді знайомству з тобою.",
+        verse: "«Бо де двоє чи троє зібрані в ім'я Моє, там Я серед них». — Матвія 18:20",
+        search: "церква заходи богослужіння зустріч"
+      }
+    ]
+  }
+};
+
+let currentLang = 'en';
+let currentCardIndex = null;
+
+const els = {
+  langBtn: document.getElementById('langBtn'),
+  langMenu: document.getElementById('langMenu'),
+  greeting: document.getElementById('t-greeting'),
+  question: document.getElementById('t-question'),
+  cardsWrap: document.getElementById('cardsWrap'),
+  home: document.getElementById('home'),
+  detail: document.getElementById('detail'),
+  backBtn: document.getElementById('backBtn'),
+  tBack: document.getElementById('t-back'),
+  footer: document.getElementById('t-footer'),
+  dEyebrow: document.getElementById('d-eyebrow'),
+  dTitle: document.getElementById('d-title'),
+  dText: document.getElementById('d-text'),
+  dVerse: document.getElementById('d-verse'),
+  dYt: document.getElementById('d-yt'),
+  dYtLabel: document.getElementById('d-yt-label')
+};
+
+function youtubeSearchUrl(query){
+  return "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
+}
+
+function renderHome(){
+  const t = translations[currentLang];
+  els.greeting.textContent = t.greeting;
+  els.question.textContent = t.question;
+  els.tBack.textContent = t.back;
+  els.footer.textContent = t.footer;
+  els.langBtn.textContent = currentLang.toUpperCase();
+
+  els.cardsWrap.innerHTML = '';
+  t.cards.forEach((card, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'card';
+    btn.style.animationDelay = (0.05 * i) + 's';
+    btn.innerHTML = '<span class="card-title"></span><span class="card-arrow" aria-hidden="true">→</span>';
+    btn.querySelector('.card-title').textContent = card.title;
+    btn.addEventListener('click', () => openDetail(i));
+    els.cardsWrap.appendChild(btn);
+  });
+}
+
+function renderDetail(){
+  if(currentCardIndex === null) return;
+  const t = translations[currentLang];
+  const card = t.cards[currentCardIndex];
+  els.dEyebrow.textContent = card.eyebrow;
+  els.dTitle.textContent = card.title;
+  els.dText.textContent = card.text;
+  els.dVerse.textContent = card.verse;
+  els.dYt.href = youtubeSearchUrl(card.search);
+  els.dYtLabel.textContent = t.watch;
+}
+
+function openDetail(index){
+  currentCardIndex = index;
+  renderDetail();
+  els.home.classList.add('hidden');
+  els.detail.classList.add('visible');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function closeDetail(){
+  els.detail.classList.remove('visible');
+  els.home.classList.remove('hidden');
+  currentCardIndex = null;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function setLang(lang){
+  currentLang = lang;
+  renderHome();
+  if(currentCardIndex !== null) renderDetail();
+  els.langMenu.classList.remove('open');
+  els.langBtn.setAttribute('aria-expanded','false');
+  document.querySelectorAll('.lang-option').forEach(opt=>{
+    opt.setAttribute('aria-current', opt.dataset.lang === lang ? 'true' : 'false');
+  });
+}
+
+els.langBtn.addEventListener('click', () => {
+  const open = els.langMenu.classList.toggle('open');
+  els.langBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+
+document.querySelectorAll('.lang-option').forEach(opt => {
+  opt.addEventListener('click', () => setLang(opt.dataset.lang));
+});
+
+document.addEventListener('click', (e) => {
+  if(!els.langWrap && !e.target.closest('.lang-wrap')){
+    els.langMenu.classList.remove('open');
+    els.langBtn.setAttribute('aria-expanded','false');
+  }
+});
+
+els.backBtn.addEventListener('click', closeDetail);
+
+renderHome();
+</script>
+</body>
+</html>
