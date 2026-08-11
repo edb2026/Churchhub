@@ -16,6 +16,9 @@
     --gold:#B8912F;
     --gold-soft:#EADFC2;
     --dusk:#5C6699;
+    --sky:#4FA9E8;
+    --sky-dark:#2F8BCB;
+    --sky-soft:#EAF5FC;
     --radius:20px;
     --shadow: 0 1px 2px rgba(35,40,58,0.04), 0 8px 24px rgba(35,40,58,0.06);
   }
@@ -45,10 +48,29 @@
     display:flex;
     align-items:center;
     justify-content:flex-end;
+    gap:10px;
     padding:22px 22px 0 22px;
     position:relative;
     z-index:20;
   }
+
+  .give-btn{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.03em;
+    color:#fff;
+    background:var(--sky);
+    border:none;
+    border-radius:14px;
+    padding:9px 20px;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(79,169,232,0.35);
+    transition:background .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  .give-btn:hover{background:var(--sky-dark); transform:translateY(-1px); box-shadow:0 6px 18px rgba(79,169,232,0.4);}
+  .give-btn:active{transform:translateY(0);}
+  .give-btn:focus-visible{outline:2px solid var(--sky-dark); outline-offset:3px;}
 
   .lang-wrap{position:relative;}
 
@@ -271,6 +293,202 @@
     color:#9CA0B4;
   }
 
+  /* give modal */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(35,40,58,0.45);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:200;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .modal-overlay.open{opacity:1; pointer-events:auto;}
+
+  .modal{
+    background:var(--paper);
+    width:100%;
+    max-width:560px;
+    max-height:88vh;
+    border-radius:24px 24px 0 0;
+    overflow-y:auto;
+    transform:translateY(24px);
+    transition:transform .3s ease;
+    box-shadow:0 -8px 40px rgba(35,40,58,0.25);
+  }
+  .modal-overlay.open .modal{transform:translateY(0);}
+
+  .modal-header{
+    position:sticky;
+    top:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 18px;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    z-index:2;
+  }
+  .modal-title{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:19px;
+    margin:0;
+    color:var(--ink);
+    text-align:center;
+    flex:1;
+  }
+  .modal-back, .modal-close{
+    background:none;
+    border:none;
+    cursor:pointer;
+    flex:none;
+    width:32px;height:32px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-soft);
+    font-size:18px;
+    transition:background .15s ease, color .15s ease;
+  }
+  .modal-back:hover, .modal-close:hover{background:var(--paper-dim); color:var(--ink);}
+  .modal-back:focus-visible, .modal-close:focus-visible{outline:2px solid var(--sky); outline-offset:2px;}
+  .modal-back.invisible{visibility:hidden;}
+
+  .modal-body{padding:22px 20px 34px 20px;}
+
+  .give-step[hidden]{display:none;}
+  .give-step-center{display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; padding:26px 10px;}
+
+  .modal-subtitle{font-size:14px; color:var(--ink-soft); margin:0 0 18px 0;}
+
+  .give-type-grid{display:flex; flex-direction:column; gap:10px; margin-bottom:18px;}
+  .give-type-btn{
+    display:flex; align-items:center; justify-content:space-between;
+    width:100%; text-align:left;
+    background:var(--paper-dim);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  .give-type-btn:hover{border-color:var(--sky);}
+  .give-type-btn.selected{border-color:var(--sky); background:var(--sky-soft);}
+  .give-type-btn:focus-visible{outline:2px solid var(--sky); outline-offset:2px;}
+
+  .project-field[hidden]{display:none;}
+  .project-field{display:flex; flex-direction:column; gap:6px; margin:2px 0 18px 0;}
+  .project-field label{font-size:13px; font-weight:600; color:var(--ink-soft);}
+  .project-field input{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    outline:none;
+    width:100%;
+    transition:border-color .18s ease;
+  }
+  .project-field input:focus{border-color:var(--sky);}
+  .form-field{display:flex; flex-direction:column; gap:6px; margin-bottom:16px;}
+  .form-row{display:flex; gap:12px;}
+  .form-row .form-field{flex:1;}
+  .form-field label{font-size:13px; font-weight:600; color:var(--ink-soft);}
+  .form-field input{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    outline:none;
+    width:100%;
+    transition:border-color .18s ease;
+  }
+  .form-field input:focus{border-color:var(--sky);}
+
+  .form-error{color:#C24545; font-size:13px; margin:-6px 0 14px 0;}
+  .form-error[hidden]{display:none;}
+
+  .payment-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px;}
+  .payment-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--paper-dim);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 10px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  .payment-btn:hover{border-color:var(--sky);}
+  .payment-btn.selected{border-color:var(--sky); background:var(--sky-soft);}
+  .payment-btn:focus-visible{outline:2px solid var(--sky); outline-offset:2px;}
+
+  .card-fields[hidden]{display:none;}
+  .card-fields{margin:4px 0 18px 0;}
+
+  .modal-primary-btn{
+    width:100%;
+    background:var(--sky);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    padding:16px;
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .18s ease, opacity .18s ease;
+  }
+  .modal-primary-btn:hover:not(:disabled){background:var(--sky-dark);}
+  .modal-primary-btn:disabled{opacity:0.45; cursor:not-allowed;}
+  .modal-primary-btn:focus-visible{outline:2px solid var(--sky-dark); outline-offset:3px;}
+
+  .spinner{
+    width:44px;height:44px;
+    border:4px solid var(--paper-dim);
+    border-top-color:var(--sky);
+    border-radius:50%;
+    animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .success-check{
+    width:64px;height:64px;
+    border-radius:50%;
+    background:#E4F5E8;
+    color:#3C9A5C;
+    display:flex; align-items:center; justify-content:center;
+    font-size:30px;
+  }
+  .give-step-center h3{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:22px;
+    margin:0;
+    color:var(--ink);
+  }
+  .give-step-center p{
+    font-size:15px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    margin:0 0 8px 0;
+  }
+  .give-step-center .modal-primary-btn{margin-top:8px;}
+
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
   }
@@ -280,6 +498,7 @@
 
 <div id="app">
   <header>
+    <button class="give-btn" id="giveBtn">Give</button>
     <div class="lang-wrap">
       <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">EN</button>
       <div class="lang-menu" id="langMenu" role="menu">
@@ -311,6 +530,77 @@
   </section>
 
   <footer class="brand" id="t-footer"></footer>
+</div>
+
+<div class="modal-overlay" id="giveOverlay">
+  <div class="modal" id="giveModal" role="dialog" aria-modal="true" aria-labelledby="giveModalTitle">
+    <div class="modal-header">
+      <button class="modal-back" id="giveBackBtn" aria-label="Back">←</button>
+      <h3 class="modal-title" id="giveModalTitle"></h3>
+      <button class="modal-close" id="giveCloseBtn" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="give-step" id="stepType">
+        <p class="modal-subtitle" id="giveSubtitleType"></p>
+        <div class="give-type-grid">
+          <button class="give-type-btn" data-type="donations" id="giveTypeDonations"></button>
+          <button class="give-type-btn" data-type="tithe" id="giveTypeTithe"></button>
+          <button class="give-type-btn" data-type="seed" id="giveTypeSeed"></button>
+          <button class="give-type-btn" data-type="project" id="giveTypeProject"></button>
+        </div>
+        <div class="project-field" id="projectField" hidden>
+          <label id="lblProject" for="projectNameInput"></label>
+          <input type="text" id="projectNameInput" autocomplete="off">
+        </div>
+        <button class="modal-primary-btn" id="typeContinueBtn" disabled></button>
+      </div>
+
+      <div class="give-step" id="stepContact" hidden>
+        <p class="modal-subtitle" id="contactHeading"></p>
+        <div class="form-row">
+          <div class="form-field"><label id="lblFirst" for="firstNameInput"></label><input id="firstNameInput" type="text" autocomplete="given-name"></div>
+          <div class="form-field"><label id="lblLast" for="lastNameInput"></label><input id="lastNameInput" type="text" autocomplete="family-name"></div>
+        </div>
+        <div class="form-field"><label id="lblContact" for="contactInput"></label><input id="contactInput" type="text" autocomplete="email"></div>
+        <div class="form-field"><label id="lblAmount" for="amountInput"></label><input id="amountInput" type="number" min="1" inputmode="decimal"></div>
+        <p class="form-error" id="contactError" hidden></p>
+        <button class="modal-primary-btn" id="contactContinueBtn"></button>
+      </div>
+
+      <div class="give-step" id="stepPayment" hidden>
+        <p class="modal-subtitle" id="paymentHeading"></p>
+        <div class="payment-grid">
+          <button class="payment-btn" data-method="paypal" id="paymentBtnPaypal"></button>
+          <button class="payment-btn" data-method="credit" id="paymentBtnCredit"></button>
+          <button class="payment-btn" data-method="debit" id="paymentBtnDebit"></button>
+          <button class="payment-btn" data-method="apple" id="paymentBtnApple"></button>
+          <button class="payment-btn" data-method="google" id="paymentBtnGoogle"></button>
+        </div>
+        <div class="card-fields" id="cardFields" hidden>
+          <div class="form-field"><label id="lblCardNumber" for="cardNumberInput"></label><input id="cardNumberInput" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456"></div>
+          <div class="form-row">
+            <div class="form-field"><label id="lblCardExpiry" for="cardExpiryInput"></label><input id="cardExpiryInput" type="text" inputmode="numeric" maxlength="5" placeholder="MM/YY"></div>
+            <div class="form-field"><label id="lblCardCvv" for="cardCvvInput"></label><input id="cardCvvInput" type="text" inputmode="numeric" maxlength="4" placeholder="123"></div>
+          </div>
+        </div>
+        <button class="modal-primary-btn" id="payCompleteBtn" disabled></button>
+      </div>
+
+      <div class="give-step give-step-center" id="stepProcessing" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="processingText"></p>
+      </div>
+
+      <div class="give-step give-step-center" id="stepSuccess" hidden>
+        <div class="success-check" aria-hidden="true">&#10003;</div>
+        <h3 id="successTitle"></h3>
+        <p id="successText"></p>
+        <button class="modal-primary-btn" id="doneBtn"></button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <script>
@@ -351,6 +641,13 @@ const translations = {
         search: "strengthening family relationships christian marriage"
       },
       {
+        title: "Walk in God's Prosperity",
+        eyebrow: "Your path",
+        text: "God's blessing isn't only spiritual — He cares about every area of your life, including your finances, work, and provision. True prosperity flows from a heart aligned with Him, marked by generosity and faithful stewardship.",
+        verse: "\u201CBeloved, I pray that you may prosper in all things and be in health, just as your soul prospers.\u201D — 3 John 1:2",
+        search: "biblical prosperity blessing testimony christian"
+      },
+      {
         title: "Learn to pray and get answers",
         eyebrow: "Your path",
         text: "Prayer isn't a formula, it's a relationship. Learn how to bring your real questions and real needs to God — and how to recognize His answers when they come.",
@@ -364,7 +661,40 @@ const translations = {
         verse: "\u201CFor where two or three gather in my name, there am I with them.\u201D — Matthew 18:20",
         search: "church events worship gathering welcome"
       }
-    ]
+    ],
+    giveModal: {
+      title: "Give",
+      subtitleType: "Choose how you'd like to give",
+      typeDonations: "General Donation",
+      typeTithe: "Tithe",
+      typeSeed: "Seed of Faith",
+      typeProject: "I want to give toward a project",
+      projectLabel: "Project name",
+      projectPlaceholder: "e.g. Building Fund, Youth Ministry...",
+      amount: "Amount",
+      amountPlaceholder: "Enter amount",
+      contactTitle: "Your information",
+      firstName: "First name",
+      lastName: "Last name",
+      contactField: "Phone number or email",
+      contactPlaceholder: "you@example.com or +1 555 123 4567",
+      paymentTitle: "Choose a payment method",
+      methodPaypal: "PayPal",
+      methodCredit: "Credit Card",
+      methodDebit: "Debit Card",
+      methodApple: "Apple Pay",
+      methodGoogle: "Google Pay",
+      cardNumber: "Card number",
+      cardExpiry: "MM/YY",
+      cardCvv: "CVV",
+      continueBtn: "Continue",
+      completeBtn: "Complete Donation",
+      processing: "Processing your donation...",
+      successTitle: "Thank you!",
+      successText: "Your donation was received. A receipt has been sent to {contact}.",
+      doneBtn: "Done",
+      required: "Please fill in all fields"
+    }
   },
   ru: {
     footer: "Церковь «Первый Свет»",
@@ -402,6 +732,13 @@ const translations = {
         search: "укрепить семейные отношения христианский брак"
       },
       {
+        title: "Божье преуспевание",
+        eyebrow: "Ваш путь",
+        text: "Благословение Божье касается не только духовной жизни — Он заботится о каждой сфере твоей жизни, включая финансы, работу и обеспечение. Настоящее преуспевание рождается из сердца, устремлённого к Нему, отмеченного щедростью и верным управлением.",
+        verse: "«Возлюбленный! молюсь, чтобы ты во всём преуспевал и был здоров, как преуспевает душа твоя». — 3 Иоанна 1:2",
+        search: "библейское преуспевание благословение свидетельство"
+      },
+      {
         title: "Научиться молиться, чтобы получать ответ",
         eyebrow: "Ваш путь",
         text: "Молитва — это не формула, а отношения. Научись приносить свои настоящие вопросы и нужды Богу — и узнавать Его ответы, когда они приходят.",
@@ -415,7 +752,40 @@ const translations = {
         verse: "«Ибо где двое или трое собраны во имя Моё, там Я посреди них». — Матфея 18:20",
         search: "церковь мероприятия богослужение встреча"
       }
-    ]
+    ],
+    giveModal: {
+      title: "Пожертвование",
+      subtitleType: "Выберите, как вы хотите дать",
+      typeDonations: "Пожертвование",
+      typeTithe: "Десятина",
+      typeSeed: "Семя веры",
+      typeProject: "Я хочу дать на проект",
+      projectLabel: "Название проекта",
+      projectPlaceholder: "например, Строительный фонд, Молодёжное служение...",
+      amount: "Сумма",
+      amountPlaceholder: "Введите сумму",
+      contactTitle: "Ваши данные",
+      firstName: "Имя",
+      lastName: "Фамилия",
+      contactField: "Номер телефона или email",
+      contactPlaceholder: "you@example.com или +1 555 123 4567",
+      paymentTitle: "Выберите способ оплаты",
+      methodPaypal: "PayPal",
+      methodCredit: "Кредитная карта",
+      methodDebit: "Дебетовая карта",
+      methodApple: "Apple Pay",
+      methodGoogle: "Google Pay",
+      cardNumber: "Номер карты",
+      cardExpiry: "ММ/ГГ",
+      cardCvv: "CVV",
+      continueBtn: "Продолжить",
+      completeBtn: "Завершить пожертвование",
+      processing: "Обрабатываем ваше пожертвование...",
+      successTitle: "Спасибо!",
+      successText: "Ваше пожертвование получено. Квитанция отправлена на {contact}.",
+      doneBtn: "Готово",
+      required: "Пожалуйста, заполните все поля"
+    }
   },
   uk: {
     footer: "Церква «Перше Світло»",
@@ -453,6 +823,13 @@ const translations = {
         search: "зміцнити сімейні стосунки християнський шлюб"
       },
       {
+        title: "Боже преуспіяння",
+        eyebrow: "Ваш шлях",
+        text: "Боже благословення стосується не лише духовного життя — Він піклується про кожну сферу твого життя, включно з фінансами, роботою та забезпеченням. Справжнє преуспіяння народжується із серця, зверненого до Нього, позначеного щедрістю та вірним управлінням.",
+        verse: "«Улюблений, молюся, щоб ти в усьому преуспівав і був здоровий, як преуспіває душа твоя». — 3 Івана 1:2",
+        search: "біблійне преуспіяння благословення свідчення"
+      },
+      {
         title: "Навчитися молитися, щоб отримувати відповідь",
         eyebrow: "Ваш шлях",
         text: "Молитва — це не формула, а стосунки. Навчись приносити свої справжні питання і потреби Богу — і впізнавати Його відповіді, коли вони приходять.",
@@ -466,7 +843,40 @@ const translations = {
         verse: "«Бо де двоє чи троє зібрані в ім'я Моє, там Я серед них». — Матвія 18:20",
         search: "церква заходи богослужіння зустріч"
       }
-    ]
+    ],
+    giveModal: {
+      title: "Пожертва",
+      subtitleType: "Оберіть, як ви хочете дати",
+      typeDonations: "Пожертва",
+      typeTithe: "Десятина",
+      typeSeed: "Насіння віри",
+      typeProject: "Я хочу дати на проект",
+      projectLabel: "Назва проекту",
+      projectPlaceholder: "наприклад, Будівельний фонд, Молодіжне служіння...",
+      amount: "Сума",
+      amountPlaceholder: "Введіть суму",
+      contactTitle: "Ваші дані",
+      firstName: "Ім'я",
+      lastName: "Прізвище",
+      contactField: "Номер телефону або email",
+      contactPlaceholder: "you@example.com або +1 555 123 4567",
+      paymentTitle: "Оберіть спосіб оплати",
+      methodPaypal: "PayPal",
+      methodCredit: "Кредитна картка",
+      methodDebit: "Дебетова картка",
+      methodApple: "Apple Pay",
+      methodGoogle: "Google Pay",
+      cardNumber: "Номер картки",
+      cardExpiry: "ММ/РР",
+      cardCvv: "CVV",
+      continueBtn: "Продовжити",
+      completeBtn: "Завершити пожертву",
+      processing: "Обробляємо вашу пожертву...",
+      successTitle: "Дякуємо!",
+      successText: "Вашу пожертву отримано. Квитанцію надіслано на {contact}.",
+      doneBtn: "Готово",
+      required: "Будь ласка, заповніть усі поля"
+    }
   }
 };
 
@@ -489,7 +899,62 @@ const els = {
   dText: document.getElementById('d-text'),
   dVerse: document.getElementById('d-verse'),
   dYt: document.getElementById('d-yt'),
-  dYtLabel: document.getElementById('d-yt-label')
+  dYtLabel: document.getElementById('d-yt-label'),
+
+  giveBtn: document.getElementById('giveBtn'),
+  giveOverlay: document.getElementById('giveOverlay'),
+  giveModal: document.getElementById('giveModal'),
+  giveModalTitle: document.getElementById('giveModalTitle'),
+  giveBackBtn: document.getElementById('giveBackBtn'),
+  giveCloseBtn: document.getElementById('giveCloseBtn'),
+
+  stepType: document.getElementById('stepType'),
+  giveSubtitleType: document.getElementById('giveSubtitleType'),
+  giveTypeDonations: document.getElementById('giveTypeDonations'),
+  giveTypeTithe: document.getElementById('giveTypeTithe'),
+  giveTypeSeed: document.getElementById('giveTypeSeed'),
+  giveTypeProject: document.getElementById('giveTypeProject'),
+  projectField: document.getElementById('projectField'),
+  lblProject: document.getElementById('lblProject'),
+  projectNameInput: document.getElementById('projectNameInput'),
+  typeContinueBtn: document.getElementById('typeContinueBtn'),
+
+  stepContact: document.getElementById('stepContact'),
+  contactHeading: document.getElementById('contactHeading'),
+  lblFirst: document.getElementById('lblFirst'),
+  firstNameInput: document.getElementById('firstNameInput'),
+  lblLast: document.getElementById('lblLast'),
+  lastNameInput: document.getElementById('lastNameInput'),
+  lblContact: document.getElementById('lblContact'),
+  contactInput: document.getElementById('contactInput'),
+  lblAmount: document.getElementById('lblAmount'),
+  amountInput: document.getElementById('amountInput'),
+  contactError: document.getElementById('contactError'),
+  contactContinueBtn: document.getElementById('contactContinueBtn'),
+
+  stepPayment: document.getElementById('stepPayment'),
+  paymentHeading: document.getElementById('paymentHeading'),
+  paymentBtnPaypal: document.getElementById('paymentBtnPaypal'),
+  paymentBtnCredit: document.getElementById('paymentBtnCredit'),
+  paymentBtnDebit: document.getElementById('paymentBtnDebit'),
+  paymentBtnApple: document.getElementById('paymentBtnApple'),
+  paymentBtnGoogle: document.getElementById('paymentBtnGoogle'),
+  cardFields: document.getElementById('cardFields'),
+  lblCardNumber: document.getElementById('lblCardNumber'),
+  cardNumberInput: document.getElementById('cardNumberInput'),
+  lblCardExpiry: document.getElementById('lblCardExpiry'),
+  cardExpiryInput: document.getElementById('cardExpiryInput'),
+  lblCardCvv: document.getElementById('lblCardCvv'),
+  cardCvvInput: document.getElementById('cardCvvInput'),
+  payCompleteBtn: document.getElementById('payCompleteBtn'),
+
+  stepProcessing: document.getElementById('stepProcessing'),
+  processingText: document.getElementById('processingText'),
+
+  stepSuccess: document.getElementById('stepSuccess'),
+  successTitle: document.getElementById('successTitle'),
+  successText: document.getElementById('successText'),
+  doneBtn: document.getElementById('doneBtn')
 };
 
 function youtubeSearchUrl(query){
@@ -547,6 +1012,8 @@ function setLang(lang){
   currentLang = lang;
   renderHome();
   if(currentCardIndex !== null) renderDetail();
+  updateGiveTexts();
+  if(giveState.step) setGiveStep(giveState.step);
   els.langMenu.classList.remove('open');
   els.langBtn.setAttribute('aria-expanded','false');
   document.querySelectorAll('.lang-option').forEach(opt=>{
@@ -571,6 +1038,195 @@ document.addEventListener('click', (e) => {
 });
 
 els.backBtn.addEventListener('click', closeDetail);
+
+/* ---- Give modal ---- */
+
+const giveState = {
+  step: null,
+  type: null,
+  projectName: '',
+  method: null
+};
+
+const GIVE_STEP_ORDER = ['type', 'contact', 'payment'];
+
+function updateGiveTexts(){
+  const t = translations[currentLang].giveModal;
+  els.giveSubtitleType.textContent = t.subtitleType;
+  els.giveTypeDonations.textContent = t.typeDonations;
+  els.giveTypeTithe.textContent = t.typeTithe;
+  els.giveTypeSeed.textContent = t.typeSeed;
+  els.giveTypeProject.textContent = t.typeProject;
+  els.lblProject.textContent = t.projectLabel;
+  els.projectNameInput.placeholder = t.projectPlaceholder;
+  els.typeContinueBtn.textContent = t.continueBtn;
+
+  els.contactHeading.textContent = t.contactTitle;
+  els.lblFirst.textContent = t.firstName;
+  els.lblLast.textContent = t.lastName;
+  els.lblContact.textContent = t.contactField;
+  els.contactInput.placeholder = t.contactPlaceholder;
+  els.lblAmount.textContent = t.amount;
+  els.amountInput.placeholder = t.amountPlaceholder;
+  els.contactError.textContent = t.required;
+  els.contactContinueBtn.textContent = t.continueBtn;
+
+  els.paymentHeading.textContent = t.paymentTitle;
+  els.paymentBtnPaypal.textContent = t.methodPaypal;
+  els.paymentBtnCredit.textContent = t.methodCredit;
+  els.paymentBtnDebit.textContent = t.methodDebit;
+  els.paymentBtnApple.textContent = t.methodApple;
+  els.paymentBtnGoogle.textContent = t.methodGoogle;
+  els.lblCardNumber.textContent = t.cardNumber;
+  els.lblCardExpiry.textContent = t.cardExpiry;
+  els.lblCardCvv.textContent = t.cardCvv;
+  els.payCompleteBtn.textContent = t.completeBtn;
+
+  els.processingText.textContent = t.processing;
+  els.doneBtn.textContent = t.doneBtn;
+}
+
+function giveModalTitleForStep(step){
+  const t = translations[currentLang].giveModal;
+  if(step === 'contact') return t.contactTitle;
+  if(step === 'payment') return t.paymentTitle;
+  if(step === 'success') return t.successTitle;
+  return t.title;
+}
+
+function setGiveStep(step){
+  giveState.step = step;
+  els.giveModalTitle.textContent = giveModalTitleForStep(step);
+  const canGoBack = step === 'contact' || step === 'payment';
+  els.giveBackBtn.classList.toggle('invisible', !canGoBack);
+
+  const stepMap = {
+    type: els.stepType,
+    contact: els.stepContact,
+    payment: els.stepPayment,
+    processing: els.stepProcessing,
+    success: els.stepSuccess
+  };
+  Object.entries(stepMap).forEach(([key, el]) => { el.hidden = key !== step; });
+}
+
+function resetGiveState(){
+  giveState.step = null;
+  giveState.type = null;
+  giveState.projectName = '';
+  giveState.method = null;
+
+  document.querySelectorAll('.give-type-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('selected'));
+  els.projectField.hidden = true;
+  els.projectNameInput.value = '';
+  els.typeContinueBtn.disabled = true;
+
+  els.firstNameInput.value = '';
+  els.lastNameInput.value = '';
+  els.contactInput.value = '';
+  els.amountInput.value = '';
+  els.contactError.hidden = true;
+
+  els.cardFields.hidden = true;
+  els.cardNumberInput.value = '';
+  els.cardExpiryInput.value = '';
+  els.cardCvvInput.value = '';
+  els.payCompleteBtn.disabled = true;
+}
+
+function updateTypeContinueState(){
+  const hasType = !!giveState.type;
+  const projectOk = giveState.type !== 'project' || els.projectNameInput.value.trim().length > 0;
+  els.typeContinueBtn.disabled = !(hasType && projectOk);
+}
+
+function openGiveModal(){
+  updateGiveTexts();
+  resetGiveState();
+  setGiveStep('type');
+  els.giveOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGiveModal(){
+  els.giveOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+els.giveBtn.addEventListener('click', openGiveModal);
+els.giveCloseBtn.addEventListener('click', closeGiveModal);
+els.giveOverlay.addEventListener('click', (e) => {
+  if(e.target === els.giveOverlay) closeGiveModal();
+});
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && els.giveOverlay.classList.contains('open')) closeGiveModal();
+});
+
+els.giveBackBtn.addEventListener('click', () => {
+  const idx = GIVE_STEP_ORDER.indexOf(giveState.step);
+  if(idx > 0) setGiveStep(GIVE_STEP_ORDER[idx - 1]);
+});
+
+document.querySelectorAll('.give-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    giveState.type = btn.dataset.type;
+    document.querySelectorAll('.give-type-btn').forEach(b => b.classList.toggle('selected', b === btn));
+    els.projectField.hidden = giveState.type !== 'project';
+    updateTypeContinueState();
+  });
+});
+
+els.projectNameInput.addEventListener('input', () => {
+  giveState.projectName = els.projectNameInput.value;
+  updateTypeContinueState();
+});
+
+els.typeContinueBtn.addEventListener('click', () => {
+  if(els.typeContinueBtn.disabled) return;
+  setGiveStep('contact');
+});
+
+els.contactContinueBtn.addEventListener('click', () => {
+  const valid = els.firstNameInput.value.trim() &&
+    els.lastNameInput.value.trim() &&
+    els.contactInput.value.trim() &&
+    els.amountInput.value && Number(els.amountInput.value) > 0;
+  els.contactError.hidden = !!valid;
+  if(!valid) return;
+  setGiveStep('payment');
+});
+
+document.querySelectorAll('.payment-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    giveState.method = btn.dataset.method;
+    document.querySelectorAll('.payment-btn').forEach(b => b.classList.toggle('selected', b === btn));
+    const needsCard = giveState.method === 'credit' || giveState.method === 'debit';
+    els.cardFields.hidden = !needsCard;
+    els.payCompleteBtn.disabled = false;
+  });
+});
+
+els.payCompleteBtn.addEventListener('click', () => {
+  if(els.payCompleteBtn.disabled) return;
+  const needsCard = giveState.method === 'credit' || giveState.method === 'debit';
+  if(needsCard){
+    const cardValid = els.cardNumberInput.value.trim() &&
+      els.cardExpiryInput.value.trim() &&
+      els.cardCvvInput.value.trim();
+    if(!cardValid) return;
+  }
+
+  setGiveStep('processing');
+  setTimeout(() => {
+    const t = translations[currentLang].giveModal;
+    els.successTitle.textContent = t.successTitle;
+    els.successText.textContent = t.successText.replace('{contact}', els.contactInput.value.trim());
+    setGiveStep('success');
+  }, 1400);
+});
+
+els.doneBtn.addEventListener('click', closeGiveModal);
 
 renderHome();
 </script>
