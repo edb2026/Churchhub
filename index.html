@@ -10,7 +10,8 @@
   :root{
     --ink:#23283A;
     --ink-soft:#4B5169;
-    --paper:#FBFAF7;
+    --paper:#F8F7F3;
+    --card-bg:#FFFFFF;
     --paper-dim:#F1EEE6;
     --line:#E4E0D6;
     --gold:#B8912F;
@@ -39,7 +40,7 @@
     min-height:100vh;
     position:relative;
     background:
-      radial-gradient(ellipse 900px 300px at 50% -60px, rgba(184,145,47,0.10), transparent 70%),
+      radial-gradient(ellipse 640px 260px at 50% 150px, rgba(184,145,47,0.09), transparent 72%),
       var(--paper);
   }
 
@@ -59,22 +60,22 @@
   .menu-wrap{position:relative;}
 
   .menu-btn{
-    width:40px;height:40px;
+    width:34px;height:34px;
     flex:none;
-    border-radius:12px;
+    border-radius:10px;
     border:1px solid var(--line);
-    background:var(--paper);
+    background:var(--card-bg);
     cursor:pointer;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:4px;
+    gap:3px;
     transition:border-color .2s ease, background .2s ease;
   }
   .menu-btn span{
     display:block;
-    width:18px; height:2px;
+    width:15px; height:2px;
     background:var(--ink-soft);
     border-radius:2px;
     transition:background .2s ease;
@@ -123,18 +124,18 @@
     font-weight:700;
     font-size:13px;
     letter-spacing:0.03em;
-    color:#fff;
-    background:var(--sky);
-    border:none;
+    color:var(--gold-soft);
+    background:var(--ink);
+    border:1px solid rgba(184,145,47,0.55);
     border-radius:14px;
     padding:9px 20px;
     cursor:pointer;
-    box-shadow:0 4px 14px rgba(79,169,232,0.35);
-    transition:background .18s ease, transform .18s ease, box-shadow .18s ease;
+    box-shadow:0 0 0 rgba(184,145,47,0), 0 4px 16px rgba(184,145,47,0.32);
+    transition:background .18s ease, transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   }
-  .give-btn:hover{background:var(--sky-dark); transform:translateY(-1px); box-shadow:0 6px 18px rgba(79,169,232,0.4);}
+  .give-btn:hover{background:#1B1F2E; border-color:var(--gold); transform:translateY(-1px); box-shadow:0 0 18px rgba(184,145,47,0.45), 0 4px 16px rgba(184,145,47,0.3);}
   .give-btn:active{transform:translateY(0);}
-  .give-btn:focus-visible{outline:2px solid var(--sky-dark); outline-offset:3px;}
+  .give-btn:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
 
   .lang-wrap{position:relative;}
 
@@ -193,26 +194,40 @@
   .greeting{
     text-align:center;
     font-family:'Inter',sans-serif;
-    font-size:13px;
-    letter-spacing:0.08em;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:0.22em;
     text-transform:uppercase;
     color:var(--gold);
-    margin:38px 0 14px 0;
+    margin:40px 0 16px 0;
     opacity:0;
-    animation:riseIn .7s ease forwards;
+    animation:riseIn .6s ease forwards;
   }
 
   .question{
     text-align:center;
     font-family:'Fraunces',serif;
     font-weight:500;
-    font-size:clamp(26px, 6vw, 34px);
-    line-height:1.28;
-    letter-spacing:-0.01em;
+    font-size:clamp(30px, 8vw, 42px);
+    line-height:1.22;
+    letter-spacing:-0.015em;
     color:var(--ink);
-    margin:0 0 40px 0;
+    margin:0 0 16px 0;
+    white-space:pre-line;
     opacity:0;
-    animation:riseIn .8s ease .08s forwards;
+    animation:riseIn .6s ease .08s forwards;
+  }
+
+  .subtext{
+    text-align:center;
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    margin:0 0 40px 0;
+    white-space:pre-line;
+    opacity:0;
+    animation:riseIn .6s ease .14s forwards;
   }
 
   @keyframes riseIn{
@@ -220,46 +235,97 @@
     to{opacity:1; transform:translateY(0);}
   }
 
-  .cards{display:flex; flex-direction:column; gap:12px;}
+  .cards{display:flex; flex-direction:column; gap:14px;}
 
   .card{
+    position:relative;
+    overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:16px;
     width:100%;
     text-align:left;
-    background:var(--paper);
+    background:var(--card-bg);
     border:1px solid var(--line);
     border-radius:var(--radius);
     padding:22px 24px;
     cursor:pointer;
     font-family:inherit;
-    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease;
     opacity:0;
-    animation:riseIn .6s ease forwards;
+    animation:riseIn .32s ease forwards;
   }
-  .card:hover{border-color:var(--gold); box-shadow:var(--shadow); transform:translateY(-2px);}
-  .card:active{transform:translateY(0);}
+  .card:hover{border-color:rgba(var(--accent-rgb,184,145,47),0.5); box-shadow:var(--shadow); transform:translateY(-3px);}
+  .card:active{transform:translateY(-1px) scale(1.01);}
   .card:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
 
+  .card-glow{
+    position:absolute;
+    top:-50%;
+    right:-16%;
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(var(--accent-rgb,184,145,47),0.20) 0%, rgba(var(--accent-rgb,184,145,47),0) 70%);
+    pointer-events:none;
+  }
+
   .card-title{
+    position:relative;
     font-family:'Fraunces',serif;
     font-weight:500;
     font-size:19px;
     color:var(--ink);
   }
   .card-arrow{
+    position:relative;
     flex:none;
     width:34px; height:34px;
     border-radius:50%;
-    background:var(--gold-soft);
-    color:var(--gold);
+    background:rgba(var(--accent-rgb,184,145,47),0.14);
+    color:var(--accent,var(--gold));
     display:flex; align-items:center; justify-content:center;
     font-size:16px;
-    transition:background .18s ease, transform .18s ease;
+    transition:background .16s ease, color .16s ease, transform .16s ease;
   }
-  .card:hover .card-arrow{background:var(--gold); color:var(--paper); transform:translateX(2px);}
+  .card:hover .card-arrow{background:var(--accent,var(--gold)); color:#fff; transform:translateX(2px);}
+
+  /* hero card */
+  .card--hero{padding:28px 26px; align-items:flex-end;}
+  .card-body{position:relative; display:flex; flex-direction:column; gap:6px;}
+  .card-title--hero{font-size:25px;}
+  .card-cta{
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .card-arrow--hero{width:40px; height:40px; font-size:17px;}
+  .card--hero .card-glow{width:190px; height:190px; top:-55%; right:-18%;}
+
+  /* mini grid cards */
+  .cards-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .card--mini{
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:space-between;
+    padding:18px 16px;
+    gap:22px;
+    min-height:96px;
+  }
+  .card-title--mini{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+  .card-arrow--mini{width:28px; height:28px; font-size:14px; align-self:flex-end;}
+  .card--mini .card-glow{width:80px; height:80px; top:-40%; right:-20%;}
+
+  .cards-list{display:flex; flex-direction:column; gap:12px;}
 
   /* detail screen */
   .detail{
@@ -657,6 +723,7 @@
   <main id="home">
     <p class="greeting" id="t-greeting"></p>
     <h1 class="question" id="t-question"></h1>
+    <p class="subtext" id="t-subtext"></p>
     <div class="cards" id="cardsWrap"></div>
   </main>
 
@@ -772,8 +839,9 @@
 const translations = {
   en: {
     footer: "Firstlight Church",
-    greeting: "God bless you",
-    question: "What do you want to change in your life today?",
+    greeting: "Welcome",
+    question: "What would you like\nGod to change in your life?",
+    subtext: "You don't have to figure it out alone.\nFind solutions. Get things done.",
     back: "Back",
     watch: "Watch on YouTube",
     cards: [
@@ -782,35 +850,41 @@ const translations = {
         eyebrow: "Your path",
         text: "Pain, sickness, or a broken heart — none of it is the end of your story. God is close to the brokenhearted, and He is still in the business of making things whole. You don't have to carry this alone.",
         verse: "\u201CHe heals the brokenhearted and binds up their wounds.\u201D — Psalm 147:3",
-        search: "healing prayer testimony christian"
+        search: "healing prayer testimony christian",
+        label: "Healing",
+        cta: "Let's pray together."
       },
       {
         title: "Overcome addiction",
         eyebrow: "Your path",
         text: "Freedom is possible — not through willpower alone, but through a new source of strength. Many have walked out of addiction and into a new life. Your next choice can be the first step.",
         verse: "\u201CSo if the Son sets you free, you will be free indeed.\u201D — John 8:36",
-        search: "overcoming addiction christian testimony"
+        search: "overcoming addiction christian testimony",
+        label: "Addiction"
       },
       {
         title: "Overcome anxiety and fear",
         eyebrow: "Your path",
         text: "The racing thoughts, the tight chest, the fear of what's next — you were never meant to hold that weight alone. Peace is available, even in uncertainty, even today.",
         verse: "\u201CDo not be anxious about anything... and the peace of God will guard your hearts.\u201D — Philippians 4:6-7",
-        search: "overcoming anxiety and fear christian faith"
+        search: "overcoming anxiety and fear christian faith",
+        label: "Anxiety & Fear"
       },
       {
         title: "Strengthen family relationships",
         eyebrow: "Your path",
         text: "Marriages, parents, children, siblings — relationships are worth fighting for. Real change starts small: one honest conversation, one act of grace at a time.",
         verse: "\u201CLove is patient, love is kind.\u201D — 1 Corinthians 13:4",
-        search: "strengthening family relationships christian marriage"
+        search: "strengthening family relationships christian marriage",
+        label: "Family"
       },
       {
         title: "Share the Gospel with others",
         eyebrow: "Your path",
         text: "Evangelism isn't about having all the answers — it's about sharing what Christ has done in your life. Start with a story, a kindness, an invitation.",
         verse: "\u201CGo into all the world and preach the gospel to all creation.\u201D — Mark 16:15",
-        search: "how to share the gospel evangelism christian"
+        search: "how to share the gospel evangelism christian",
+        label: "Gospel"
       },
       {
         title: "Walk in God's Prosperity",
@@ -922,8 +996,9 @@ const translations = {
   },
   ru: {
     footer: "Церковь «Первый Свет»",
-    greeting: "Бог да благословит тебя",
-    question: "Что вы хотите изменить в своей жизни сегодня?",
+    greeting: "Добро пожаловать",
+    question: "Что бы вы хотели,\nчтобы Бог изменил в вашей жизни?",
+    subtext: "Тебе не нужно разбираться в этом одному.\nНайди решение. Сделай шаг.",
     back: "Назад",
     watch: "Смотреть на YouTube",
     cards: [
@@ -932,35 +1007,41 @@ const translations = {
         eyebrow: "Ваш путь",
         text: "Боль, болезнь или разбитое сердце — это ещё не конец твоей истории. Бог близок к сокрушённым сердцем, и Он всё ещё исцеляет. Тебе не нужно нести это в одиночку.",
         verse: "«Он исцеляет сокрушённых сердцем и врачует скорби их». — Псалом 146:3",
-        search: "исцеление молитва свидетельство христианское"
+        search: "исцеление молитва свидетельство христианское",
+        label: "Исцеление",
+        cta: "Помолимся вместе."
       },
       {
         title: "Победить зависимость",
         eyebrow: "Ваш путь",
         text: "Свобода возможна — не только силой воли, но благодаря новому источнику силы. Многие вышли из зависимости к новой жизни. Твой следующий выбор может стать первым шагом.",
         verse: "«Итак, если Сын освободит вас, то истинно свободны будете». — Иоанна 8:36",
-        search: "победить зависимость христианское свидетельство"
+        search: "победить зависимость христианское свидетельство",
+        label: "Зависимость"
       },
       {
         title: "Побороть тревогу и страх",
         eyebrow: "Ваш путь",
         text: "Тревожные мысли, стеснение в груди, страх за будущее — тебе никогда не нужно было нести этот груз в одиночку. Мир доступен даже в неопределённости, даже сегодня.",
         verse: "«Не заботьтесь ни о чём... и мир Божий... соблюдёт сердца ваши». — Филиппийцам 4:6-7",
-        search: "побороть тревогу и страх христианская вера"
+        search: "побороть тревогу и страх христианская вера",
+        label: "Тревога и страх"
       },
       {
         title: "Укрепить семейные отношения",
         eyebrow: "Ваш путь",
         text: "Браки, родители, дети, братья и сёстры — за отношения стоит бороться. Настоящие перемены начинаются с малого: один честный разговор, один добрый поступок за раз.",
         verse: "«Любовь долготерпит, милосердствует». — 1 Коринфянам 13:4",
-        search: "укрепить семейные отношения христианский брак"
+        search: "укрепить семейные отношения христианский брак",
+        label: "Семья"
       },
       {
         title: "Делиться Евангелием с другими",
         eyebrow: "Ваш путь",
         text: "Евангелизация — это не про идеальные слова, а про то, чтобы поделиться тем, что Христос сделал в твоей жизни. Начни с истории, доброго поступка, приглашения.",
         verse: "«Идите по всему миру и проповедуйте Евангелие всей твари». — От Марка 16:15",
-        search: "как делиться Евангелием христианская евангелизация"
+        search: "как делиться Евангелием христианская евангелизация",
+        label: "Евангелие"
       },
       {
         title: "Божье преуспевание",
@@ -1072,8 +1153,9 @@ const translations = {
   },
   uk: {
     footer: "Церква «Перше Світло»",
-    greeting: "Бог хай благословить тебе",
-    question: "Що ви хочете змінити у своєму житті сьогодні?",
+    greeting: "Ласкаво просимо",
+    question: "Що б ви хотіли,\nщоб Бог змінив у вашому житті?",
+    subtext: "Тобі не потрібно розбиратися в цьому самому.\nЗнайди рішення. Зроби крок.",
     back: "Назад",
     watch: "Дивитися на YouTube",
     cards: [
@@ -1082,35 +1164,41 @@ const translations = {
         eyebrow: "Ваш шлях",
         text: "Біль, хвороба чи розбите серце — це ще не кінець твоєї історії. Бог близький до тих, у кого зламане серце, і Він досі зцілює. Тобі не потрібно нести це самому.",
         verse: "«Він зцілює зламаних серцем і перев'язує їхні рани». — Псалом 146:3",
-        search: "зцілення молитва свідчення християнське"
+        search: "зцілення молитва свідчення християнське",
+        label: "Зцілення",
+        cta: "Помолимося разом."
       },
       {
         title: "Перемогти залежність",
         eyebrow: "Ваш шлях",
         text: "Свобода можлива — не лише силою волі, а завдяки новому джерелу сили. Багато хто вийшов із залежності до нового життя. Твій наступний вибір може стати першим кроком.",
         verse: "«Отже, коли Син зробить вас вільними, то справді вільні будете». — Івана 8:36",
-        search: "перемогти залежність християнське свідчення"
+        search: "перемогти залежність християнське свідчення",
+        label: "Залежність"
       },
       {
         title: "Побороти тривогу і страх",
         eyebrow: "Ваш шлях",
         text: "Тривожні думки, стиснення в грудях, страх перед майбутнім — тобі ніколи не потрібно було нести цей тягар самому. Мир доступний навіть у невизначеності, навіть сьогодні.",
         verse: "«Ні про що не турбуйтесь... і мир Божий... збереже серця ваші». — Филип'ян 4:6-7",
-        search: "побороти тривогу і страх християнська віра"
+        search: "побороти тривогу і страх християнська віра",
+        label: "Тривога і страх"
       },
       {
         title: "Зміцнити сімейні стосунки",
         eyebrow: "Ваш шлях",
         text: "Шлюби, батьки, діти, брати і сестри — за стосунки варто боротися. Справжні зміни починаються з малого: одна щира розмова, один добрий вчинок за раз.",
         verse: "«Любов довготерпить, милосердствує». — 1 Коринтян 13:4",
-        search: "зміцнити сімейні стосунки християнський шлюб"
+        search: "зміцнити сімейні стосунки християнський шлюб",
+        label: "Сім'я"
       },
       {
         title: "Ділитися Євангелієм з іншими",
         eyebrow: "Ваш шлях",
         text: "Євангелізація — це не про ідеальні слова, а про те, щоб поділитися тим, що Христос зробив у твоєму житті. Почни з історії, доброго вчинку, запрошення.",
         verse: "«Ідіть по всьому світу й проповідуйте Євангеліє всьому творінню». — Від Марка 16:15",
-        search: "як ділитися Євангелієм християнська євангелізація"
+        search: "як ділитися Євангелієм християнська євангелізація",
+        label: "Євангеліє"
       },
       {
         title: "Боже преуспіяння",
@@ -1233,6 +1321,7 @@ const els = {
   langMenu: document.getElementById('langMenu'),
   greeting: document.getElementById('t-greeting'),
   question: document.getElementById('t-question'),
+  subtext: document.getElementById('t-subtext'),
   cardsWrap: document.getElementById('cardsWrap'),
   home: document.getElementById('home'),
   detail: document.getElementById('detail'),
@@ -1317,24 +1406,91 @@ function youtubeSearchUrl(query){
   return "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
 }
 
+const CARD_ACCENTS = ['#C9A227','#8B7AA8','#4FA9E8','#7C9473','#D98B4A','#4E9A78','#6C7FD6','#C17B98','#C2703D'];
+
+function accentRgb(hex){
+  const h = hex.replace('#','');
+  const num = parseInt(h,16);
+  return [(num>>16)&255,(num>>8)&255,num&255].join(',');
+}
+
+function applyAccent(el, index){
+  const color = CARD_ACCENTS[index % CARD_ACCENTS.length];
+  el.style.setProperty('--accent', color);
+  el.style.setProperty('--accent-rgb', accentRgb(color));
+}
+
 function renderHome(){
   const t = translations[currentLang];
   els.greeting.textContent = t.greeting;
   els.question.textContent = t.question;
+  els.subtext.textContent = t.subtext || '';
   els.tBack.textContent = t.back;
   els.footer.textContent = t.footer;
   els.langBtn.textContent = currentLang.toUpperCase();
 
   els.cardsWrap.innerHTML = '';
-  t.cards.forEach((card, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'card';
-    btn.style.animationDelay = (0.05 * i) + 's';
-    btn.innerHTML = '<span class="card-title"></span><span class="card-arrow" aria-hidden="true">→</span>';
-    btn.querySelector('.card-title').textContent = card.title;
-    btn.addEventListener('click', () => openDetail(i));
-    els.cardsWrap.appendChild(btn);
-  });
+
+  if(t.cards.length){
+    const hero = document.createElement('button');
+    hero.className = 'card card--hero';
+    applyAccent(hero, 0);
+    hero.style.animationDelay = '0.12s';
+    hero.innerHTML =
+      '<span class="card-glow" aria-hidden="true"></span>' +
+      '<span class="card-body">' +
+        '<span class="card-title card-title--hero"></span>' +
+        '<span class="card-cta"></span>' +
+      '</span>' +
+      '<span class="card-arrow card-arrow--hero" aria-hidden="true">→</span>';
+    const heroCard = t.cards[0];
+    hero.querySelector('.card-title--hero').textContent = heroCard.label || heroCard.title;
+    hero.querySelector('.card-cta').textContent = heroCard.cta || '';
+    hero.addEventListener('click', () => openDetail(0));
+    els.cardsWrap.appendChild(hero);
+  }
+
+  const gridIndices = [1,2,3,4].filter(i => t.cards[i]);
+  if(gridIndices.length){
+    const grid = document.createElement('div');
+    grid.className = 'cards-grid';
+    gridIndices.forEach((idx, gi) => {
+      const card = t.cards[idx];
+      const btn = document.createElement('button');
+      btn.className = 'card card--mini';
+      applyAccent(btn, idx);
+      btn.style.animationDelay = (0.17 + gi * 0.035) + 's';
+      btn.innerHTML =
+        '<span class="card-glow" aria-hidden="true"></span>' +
+        '<span class="card-title card-title--mini"></span>' +
+        '<span class="card-arrow card-arrow--mini" aria-hidden="true">→</span>';
+      btn.querySelector('.card-title--mini').textContent = card.label || card.title;
+      btn.addEventListener('click', () => openDetail(idx));
+      grid.appendChild(btn);
+    });
+    els.cardsWrap.appendChild(grid);
+  }
+
+  const restIndices = t.cards.map((_, i) => i).filter(i => i >= 5);
+  if(restIndices.length){
+    const list = document.createElement('div');
+    list.className = 'cards-list';
+    restIndices.forEach((idx, ri) => {
+      const card = t.cards[idx];
+      const btn = document.createElement('button');
+      btn.className = 'card';
+      applyAccent(btn, idx);
+      btn.style.animationDelay = (0.32 + ri * 0.03) + 's';
+      btn.innerHTML =
+        '<span class="card-glow" aria-hidden="true"></span>' +
+        '<span class="card-title"></span>' +
+        '<span class="card-arrow" aria-hidden="true">→</span>';
+      btn.querySelector('.card-title').textContent = card.title;
+      btn.addEventListener('click', () => openDetail(idx));
+      list.appendChild(btn);
+    });
+    els.cardsWrap.appendChild(list);
+  }
 
   els.menuBtn.setAttribute('aria-label', t.menuAria);
   document.querySelectorAll('.menu-option').forEach(opt => {
